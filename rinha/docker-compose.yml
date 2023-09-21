@@ -1,0 +1,32 @@
+version: '3.3'
+services:
+  postgres:
+    image: postgres:latest
+    container_name: rinha_postgres
+    environment:
+      POSTGRES_USER: rinha
+      POSTGRES_PASSWORD: rinha
+      POSTGRES_DB: rinha
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  flask-app:
+    build:
+      context: "."
+    container_name: rinha_python
+    ports:
+      - "5000:5000"
+    depends_on:
+      - postgres
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: rinha
+      POSTGRES_PASSWORD: rinha
+      POSTGRES_DB: rinha
+
+volumes:
+  pg_data:
+
